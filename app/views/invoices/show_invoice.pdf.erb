@@ -1,0 +1,178 @@
+ <!DOCTYPE html>
+<html>
+<head>
+  <style>
+    table {
+     width:100%;
+   }
+
+   p {
+     width: 250px;
+
+   }
+   table, th, td {
+     border: 1px solid black;
+     border-collapse: collapse;
+     font-size: 12px;
+   }
+   th, td {
+     padding: 2px;
+     text-align: left;
+   }
+   table#t01 tr:nth-child(even) {
+     background-color: #eee;
+   }
+   table#t01 tr:nth-child(odd) {
+    background-color:#fff;
+  }
+  table#t01 th {
+   background-color: black;
+   color: white;
+ }
+ h5 {
+   display:inline;
+ }
+
+ img {
+  border: 1px solid #ddd;
+  border-radius: 1px;
+  padding: 3px;
+  width: 150px;
+}
+
+
+
+
+.gallery-text {
+  float: left;
+  width: 48%;
+  margin: 1%;
+}
+.gallery-text p {
+  word-break: break-all;
+}
+</style>
+</head>
+<body>
+
+    <div id="gallery-text">
+    <div class="gallery-text">
+     <%= wicked_pdf_image_tag 'test.png' %>
+   </div>
+   <div class="gallery-text" align="right">
+    <p>
+      <p> <h2><strong><font color="grey">Qset Technology</strong></h2></font>
+      </p>
+    </div> 
+  </div>
+  <!-- Main Nav --> 
+
+        
+    <!-- Main content -->
+    <section class="content">
+      <div class="m-b-3">
+        
+      <div class="info-box"> 
+        <!-- Main content -->
+        <section class="invoice"> 
+          <!-- title row -->
+          <div class="row">
+            <div class="col-lg-12 m-b-3">
+              <h3 class="text-black" align="right"> INVOICE <span class="pull-right">#<%= @invoice.invoice_no %></span> </h3>
+            </div>
+            <!-- /.col --> 
+          </div>
+          <!-- info row -->
+          <div class="row invoice-info m-b-3">
+            <div class="col-sm-4 invoice-col" align="right"> From
+              <address>
+              <strong>Qset</strong><br>
+              Address:Vishrantwadi<br>
+                      Pune,India<br>
+              Phone: 1234567890<br>
+              Email: qset@gmail.com
+              </address>
+            </div>
+            <!-- /.col -->
+             <div class="col-sm-4 invoice-col" align="left"> To
+              <address>
+              <strong> <%=@invoice.client.name%></strong><br>
+              Address:<%=@invoice.client.address%><br>
+              Phone:<%=@invoice.client.phone_no%><br>
+              </address>
+            </div>
+            <!-- /.col -->
+            <div class="col-sm-4 invoice-col"> 
+              <br>
+              <b>Invoice ID:</b><%=@invoice.invoice_no%> <br>
+              <b>Payment Due:</b><%=@invoice.invoice_date%><br>
+            </div>
+            <!-- /.col --> 
+          </div>
+          <!-- /.row --> 
+          
+          <!-- Table row -->
+          <div class="row ">
+            <div class="col-xs-12 table-responsive">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>Sr No</th>
+                    <th>Product</th>
+                    <th>Description</th>
+                    <th>Quantity</th>
+                    <th>Subtotal</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% @invoice.invoice_items.each_with_index do |b,c| %>
+                  <tr>
+                    <td><%= c+1 %></td>
+                    <td><%= b.product.name %></td>
+                    <td><%= b.product.description %></td>
+                    <td><%= b.quantity %></td>
+                    <td><%= b.total %></td>
+                  </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            </div>
+            <!-- /.col --> 
+          </div>
+          <!-- /.row -->
+          
+          <div class="row m-t-3"> 
+          
+           <div class="col-lg-6">
+              <p class="lead"><strong>Amount Due:</strong> <%=@invoice.invoice_date%></p>
+               
+                  <%total_amt = 0%>
+                   <% @invoice.invoice_items.each_with_index do |m| %>
+                     <%total_amt += m.total.to_f%>
+                  <% end %>
+                    
+                 <p>
+                  <strong>Payable Amount:</strong>
+                  <%=total_amt%>
+                 </p>
+                  <p>
+                 <strong>Payable Amount in words:</strong>
+                  <%= total_amt.to_i.to_words.split.map(&:capitalize).join(' ')%>
+                 </p>
+              </div>
+            <!-- /.col --> 
+          </div>
+          <!-- /.row --> 
+          
+          <!-- this row will not appear when printing -->
+          
+        </section>
+        <!-- /.content --> 
+      </div>
+    </section>
+    <!-- /.content --> 
+ 
+
+
+</body>
+</html>
